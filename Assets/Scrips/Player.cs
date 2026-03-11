@@ -18,10 +18,8 @@ public class Player : MonoBehaviour
 
         if (other.TryGetComponent(out SpriteRenderer enemyRenderer))
         {
-            ChangeColor(enemyRenderer);
+            ChangeColor(_renderer, enemyRenderer);
         }
-        
-        ChangeColor(_renderer);
     }
     
     private void OnTriggerExit2D(Collider2D other)
@@ -30,10 +28,8 @@ public class Player : MonoBehaviour
         
         if (other.TryGetComponent(out SpriteRenderer enemyRenderer))
         {
-            ChangeColor(enemyRenderer);
+            ChangeColor(_renderer, enemyRenderer);
         }
-        
-        ChangeColor(_renderer);
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -41,23 +37,18 @@ public class Player : MonoBehaviour
         Debug.Log($"OnTriggerStay2D: {other.gameObject.name}");
     }
 
-    private void ChangeColor(SpriteRenderer spriteRenderer)
+    private void ChangeColor(SpriteRenderer playerSpriteRenderer, SpriteRenderer enemySpriteRenderer)
     {
-        Color currentColor = spriteRenderer.color;
-
-        if (currentColor == Color.red)
-        {
-            spriteRenderer.color = Color.green;
-        }
-        else if (currentColor == Color.green)
-        {
-            spriteRenderer.color = Color.red;
-        }
-        else
-        {
-            Debug.LogError($"Current Player color: {currentColor}");
-        }
+        Color playerCurrentColor = playerSpriteRenderer.color;
+        Color enemyCurrentColor = enemySpriteRenderer.color;
         
-        Debug.Log($"Current color for {spriteRenderer.gameObject.name} is {spriteRenderer.color}");
+        Color playerNewColor = enemyCurrentColor;
+        Color enemyNewColor = playerCurrentColor;
+        
+        playerSpriteRenderer.color = playerNewColor;
+        enemySpriteRenderer.color = enemyNewColor;
+        
+        Debug.Log($"Current color for {playerSpriteRenderer.gameObject.name} is {playerSpriteRenderer.color}");
+        Debug.Log($"Current color for {enemySpriteRenderer.gameObject.name} is {enemySpriteRenderer.color}");
     }
 }
